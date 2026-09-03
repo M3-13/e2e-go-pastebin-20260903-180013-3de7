@@ -7,5 +7,10 @@ import (
 )
 
 func Retrieve(w http.ResponseWriter, r *http.Request, s *store.Store, id string) {
-	WriteError(w, http.StatusNotImplemented, "GET /pastes/{id} not implemented")
+	p, ok := s.Get(id)
+	if !ok {
+		WriteError(w, http.StatusNotFound, "not found")
+		return
+	}
+	WriteJSON(w, http.StatusOK, p)
 }
