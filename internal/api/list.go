@@ -7,5 +7,5 @@ import (
 )
 
 func List(w http.ResponseWriter, r *http.Request, s *store.Store) {
-	WriteError(w, http.StatusNotImplemented, "GET /pastes not implemented")
+	WriteJSON(w, http.StatusOK, s.List())
 }
