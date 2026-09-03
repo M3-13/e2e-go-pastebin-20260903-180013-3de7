@@ -7,5 +7,9 @@ import (
 )
 
 func Delete(w http.ResponseWriter, r *http.Request, s *store.Store, id string) {
-	WriteError(w, http.StatusNotImplemented, "DELETE /pastes/{id} not implemented")
+	if s.Delete(id) {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+	WriteError(w, http.StatusNotFound, "paste not found")
 }
