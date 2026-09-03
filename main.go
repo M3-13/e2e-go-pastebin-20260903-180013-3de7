@@ -9,9 +9,7 @@ import (
 	"pastebin/internal/store"
 )
 
-func main() {
-	st := store.New()
-
+func newMux(st *store.Store) *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +42,16 @@ func main() {
 			api.WriteError(w, http.StatusMethodNotAllowed, "method not allowed")
 		}
 	})
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		api.WriteError(w, http.StatusNotFound, "not found")
+	})
+
+	return mux
+}
+
+func main() {
+	mux := newMux(store.New())
 
 	port := os.Getenv("PORT")
 	if port == "" {
